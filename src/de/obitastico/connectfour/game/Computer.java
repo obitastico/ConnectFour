@@ -9,7 +9,7 @@ import static de.obitastico.connectfour.Helpers.copy_board;
 import static de.obitastico.connectfour.Helpers.eval_board;
 
 public class Computer extends Player {
-    public static int starting_depth = 7;
+    public static int starting_depth = 13;
 
     public Computer(char symbol) {
         super(symbol, true);

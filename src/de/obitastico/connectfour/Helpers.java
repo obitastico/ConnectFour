@@ -98,7 +98,7 @@ public class Helpers {
 
         for (int i = 0; i < cur_board.height; i++) {
             for (int j = 0; j < cur_board.width; j++) {
-                return eval_col(i, j) + eval_row(i, j) + eval_diagonal_left(i, j) + eval_diagonal_right(i, j);
+                score += eval_col(i, j) + eval_row(i, j) + eval_diagonal_left(i, j) + eval_diagonal_right(i, j);
             }
         }
 
@@ -106,14 +106,11 @@ public class Helpers {
     }
 
     public static int score_4(int start_row, int start_col){
-        if (cur_depth == cur_starting_depth){
-            return cur_board.get(start_row, start_col) == cur_board.player1.symbol ? 10000 * cur_depth : -10000 * (cur_starting_depth + cur_depth);
-        }
-        return cur_board.get(start_row, start_col) == cur_board.player1.symbol ? 100 * cur_depth : -100 * (cur_starting_depth + cur_depth);
+        return cur_board.get(start_row, start_col) == cur_board.player1.symbol ? 16 * cur_depth : -16 * (cur_starting_depth + cur_depth);
     }
 
     public static int score_3(int start_row, int start_col){
-        return cur_board.get(start_row, start_col) == cur_board.player1.symbol ? 10 : -10;
+        return cur_board.get(start_row, start_col) == cur_board.player1.symbol ? 4 : -4;
     }
 
     public static int score_2(int start_row, int start_col){

@@ -9,7 +9,7 @@ public class Main {
 
     public static void console() {
         Player player1 = new Computer('X');
-        Player player2 = new Computer('O');
+        Player player2 = new Human('O');
         Board board = new Board(player1, player2);
         Player active_player = player1;
 
