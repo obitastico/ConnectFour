@@ -25,7 +25,6 @@ public class Computer extends Player {
     private Map<String, Integer> minimax(@NotNull Board board, boolean max_player, int depth, int alpha, int beta){
         if (board.is_game_over() || depth == 0){
             Map<String, Integer> move = new HashMap<>();
-            // move.put("eval", curr_board.get_winner() * (curr_board.player1.symbol == this.symbol ? curr_depth : cur_starting_depth + curr_depth));
             move.put("eval", eval_board(board, depth, starting_depth));
             return move;
         }
