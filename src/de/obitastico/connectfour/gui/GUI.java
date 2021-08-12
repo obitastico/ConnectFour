@@ -10,11 +10,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 public class GUI implements ActionListener {
-    static Player player1 = new Computer('X');
-    static Player player2 = new Human('O');
-    static Board board = new Board(player1, player2);
-    static Player active_player = player1;
+    static Player player1;
+    static Player player2;
+    static Board board = new Board(new Player('X', false), new Player('O', false));
+    static Player active_player;
 
     static JFrame frame = new JFrame();
     static JPanel title = new JPanel();
@@ -34,7 +35,6 @@ public class GUI implements ActionListener {
         text.setForeground(new Color(255,255,255));
         text.setFont(new Font("Consolas", Font.BOLD, 75));
         text.setHorizontalAlignment(JLabel.CENTER);
-        text.setText("Connect Four!");
         text.setOpaque(true);
 
         title.setLayout(new BorderLayout());
@@ -43,8 +43,8 @@ public class GUI implements ActionListener {
         button.setLayout(new GridLayout(6,7));
         button.setBackground(new Color(0,0,0));
 
-        for(int i = 0;i < 6;i++){
-            for(int j = 0;j < 7;j++){
+        for(int i = 0;i < board.height;i++){
+            for(int j = 0;j < board.width;j++){
                 buttons[i][j] = new JButton();
                 button.add(buttons[i][j]);
                 buttons[i][j].setFont(new Font("Consolas", Font.BOLD, 75));
@@ -56,10 +56,46 @@ public class GUI implements ActionListener {
         title.add(text);
         frame.add(title, BorderLayout.NORTH);
         frame.add(button);
+
+        reset();
+
+        if (active_player.com){
+            do_turn();
+        }
+    }
+
+    public static void do_turn(){
+        assert active_player.com;
+        do_turn(active_player.get_pos(board));
+    }
+
+    public static void do_turn(int row_num){
+        board.place_symbol(row_num, active_player.symbol);
+
+        for (int i = board.height - 1; i > -1; i--) {
+            if (buttons[i][row_num].getText().equals("")){
+                buttons[i][row_num].setText(String.valueOf(active_player.symbol));
+                break;
+            }
+        }
+
+        if (board.is_game_over()){
+            text.setText(active_player.symbol + " wins!");
+            new GameOverWindow(active_player.symbol);
+            return;
+        }
+
+        switch_player();
+
+        text.setText("Current Player: " + active_player.symbol);
+
+        if (active_player.com){
+            do_turn();
+        }
     }
 
     public static void reset() {
-        player1 = new Computer('X');
+        player1 = new Human('X');
         player2 = new Human('O');
         board = new Board(player1, player2);
 
@@ -68,17 +104,30 @@ public class GUI implements ActionListener {
                 buttons[i][j].setText("");
             }
         }
+
         switch_player();
 
-        text.setText("Current Player: ");
+        text.setText("Current Player: " + active_player.symbol);
     }
 
     public static void switch_player(){
+        if (active_player == null){
+            active_player = player1;
+            return;
+        }
+
         active_player = active_player.symbol == player1.symbol ? player2 : player1;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        System.out.println(e.toString());
+        for(int i = 0;i < board.height;i++){
+            for(int j = 0;j < board.width;j++){
+                if(e.getSource() == buttons[i][j] && board.is_empty(j)){
+                    do_turn(j);
+                }
+            }
+        }
     }
 }
