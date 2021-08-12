@@ -1,10 +1,12 @@
 package de.obitastico.connectfour;
 
 import de.obitastico.connectfour.game.*;
+import de.obitastico.connectfour.gui.GUI;
 
 public class Main {
     public static void main(String[] args) {
-        console();
+        new GUI();
+        // console();
     }
 
     public static void console() {
