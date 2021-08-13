@@ -60,7 +60,8 @@ public class GUI implements ActionListener {
         reset();
 
         if (active_player.com){
-            do_turn();
+            text.setText("AI is thinking...");
+            new ComputerThread().run();
         }
     }
 
@@ -90,13 +91,14 @@ public class GUI implements ActionListener {
         text.setText("Current Player: " + active_player.symbol);
 
         if (active_player.com){
-            do_turn();
+            text.setText("AI is thinking...");
+            new ComputerThread().run();
         }
     }
 
     public static void reset() {
         player1 = new Human('X');
-        player2 = new Human('O');
+        player2 = new Computer('O');
         board = new Board(player1, player2);
 
         for(int i = 0;i < board.height;i++){
@@ -121,11 +123,11 @@ public class GUI implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e.toString());
         for(int i = 0;i < board.height;i++){
             for(int j = 0;j < board.width;j++){
                 if(e.getSource() == buttons[i][j] && board.is_empty(j)){
                     do_turn(j);
+                    break;
                 }
             }
         }

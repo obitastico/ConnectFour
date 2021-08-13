@@ -58,7 +58,8 @@ public class GameOverWindow implements ActionListener {
             frame.dispose();
             GUI.reset();
             if (GUI.active_player.com){
-                GUI.do_turn();
+                text.setText("AI is thinking...");
+                new ComputerThread().run();
             }
         }
     }
